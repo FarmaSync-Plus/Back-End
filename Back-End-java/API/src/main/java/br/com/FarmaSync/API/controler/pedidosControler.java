@@ -15,8 +15,7 @@ import java.util.List;
 @RequestMapping("/pedidos")
 public class pedidosControler {
 
-    @Autowired
-    private PedidosRepository PedidosRepository;
+
     @Autowired
     private PedidosRepository pedidosRepository;
 
