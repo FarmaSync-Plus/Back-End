@@ -3,5 +3,11 @@ package br.com.FarmaSync.API.repository;
 import br.com.FarmaSync.API.models.Usuarios;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface UsuariosRepository extends JpaRepository<Usuarios,Long> {
+
+boolean existsByCpf(String cpf);
+
+
 }
