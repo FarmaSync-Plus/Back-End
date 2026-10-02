@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=], initial-scale=1.0">
+    <title> ver seus dados </title>
+</head>
+
+<header>
+    <h2>Olá, <span id="nome-usuario">Usuário</span>! Bem vindo de volta!</h2>
+   <h1>Seus dados cadastrados no sistema:</h1>
+</header>
+
+<body>
+
+<div id="sobreposicao-tela">
+
+<div id="cartao-informativo">
+
+<div id="result"></div>
+</div>
+</div>
+
+   <div class="tabela">
+    <table id="tabledata" class="table table-bordered table-striped">
+        <thead><!--grupo de cabeçalhos presentes na tabela-->
+            <tr> <!--tr significa as linhas da tabela-->
+                
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Genero</th>
+                <th>Rua</th>
+                <th>Bairro</th>
+                <th>Cidade</th>
+                <th>Estado</th>
+                <th>Email</th>
+                <th>Senha</th>
+                <th>Data de Nascimento</th>
+                
+            </tr>
+           
+        </thead>
+     <tbody><!--grupo de corpo da tabela-->
+        <!--Os dados serão preenchidos aqui via JS-->
+       <tr>
+        <td colspan="8" class="text-center">Carregando...</td>  <!--td significa tabela de dados-->
+       </tr>
+        </tbody>   
+    
+    </table>
+   </div>
+
+   </div>
+   <div id="seletores">
+         <button onclick="logout()" class="btn-logout">Sair</button>
+        <button onclick="atualizar()" id="atualizar">Atualizar</button>
+        <button onclick="apagar(event)"id="apagar">Apagar</button>
+   </div>
+<div id="modal-apagar">
+    <div id="caixa-alerta">
+        <div id="confirm">
+
+        </div>
+    </div>
+</div>
+
+<script>
+    let usuarioIdLogado = null // isso aqui é para armazenar o id do usuário logado
+
+  if(localStorage.getItem('usuarioLogado')!=='true'){
+    alert("Acesso Negado Você precisa estar logado para acessar essa página !");
+    window.location.href="index.html";
+  }
+  const nomeUsuario = localStorage.getItem('nomeUsuario');
+  const usuarioLogado = localStorage.getItem('usuarioLogado');
+  const emailUsuario = localStorage.getItem('emailUsuario');
+
+  if(nomeUsuario){
+    document.getElementById('nome-usuario').textContent=nomeUsuario;
+  }
+function logout() {
+
+const response = document.getElementById("result");
+const cartaoinformativo = document.getElementById("cartao-informativo");
+   const sobreposicaotela = document.getElementById("sobreposicao-tela");
+
+
+
+    localStorage.removeItem('usuarioLogado'); // Remove o item do localStorage
+    localStorage.removeItem('emailUsuario'); // Remove o email do usuário do localStorage
+
+          response.innerHTML = `<h3>Atenção !</h3><br><p>Você foi deslogado com sucesso !</p><br><button id="confirmar" onclick = "window.location.href = 'index.html'">Aceitar</button>`;
+
+          const ok = document.getElementById("confirmar");
+          document.querySelector("h3").style.color="red";
+          document.querySelector('p').style.color="black";
+
+
+cartaoinformativo.style.background="#fff";
+        cartaoinformativo.style.padding="40px";
+        cartaoinformativo.style.borderRadius= "20px";
+        cartaoinformativo.style.textAlign= "center";
+        cartaoinformativo.style.maxWidth= "380px";
+        cartaoinformativo.style.width= "90%";
+        cartaoinformativo.style.boxShadow= "0 15px 30px rgba(0,0,0,0.3)";
+        cartaoinformativo.style.animation= "entradaSuave 0.4s cubic-bezier(0.68,-0.55,0.265,1.55) forwards";
+     
+         sobreposicaotela.style.position="fixed";
+         sobreposicaotela.style.top="0";
+         sobreposicaotela.style.left="0";
+         sobreposicaotela.style.width="100%";
+         sobreposicaotela.style.height="100%";
+         sobreposicaotela.style.background="rgba(0,0,0,0.7)";
+         sobreposicaotela.style.display="flex";
+         sobreposicaotela.style.justifyContent="center";
+         sobreposicaotela.style.alignItems="center";
+         sobreposicaotela.style.zIndex="9999";
+         sobreposicaotela.style.backdropFilter="blur(5px)";                                                     
+         
+         ok.style.background="blue";
+         ok.style.color="white";
+         ok.style.fontWeight="BOLD";
+         ok.style.fontSize="18px";
+         ok.style.borderRadius="10px";
+         ok.style.cursor="pointer";
+         ok.style.transition="background 0.3s ease, transform 0.3s ease";
+         ok.style.padding="10px 20px";
+
+}
+document.addEventListener('DOMContentLoaded',function(){
+
+const emailLogado = localStorage.getItem('emailUsuario');
+fetch('http://localhost:8082/usuarios/')
+.then(response => response.json())
+.then(data =>{
+    const tableBody = document.querySelector('#tabledata tbody');
+    tableBody.innerHTML ="";
+
+    const usuarioLogado = data.find(usuario => usuario.emailUsuario || usuario.cpf);
+
+    if(usuarioLogado){
+      usuarioIdLogado = usuarioLogado.usuarioId;
+      localStorage.setItem('usuarioId',usuarioIdLogado);
+      console.log("Objetos vindos do banco de dados : ",usuarioIdLogado);
+      console.log("Id do usuario logado : ",usuarioIdLogado);
+    
+         const row =document.createElement('tr');
+           row.innerHTML = `
+                
+                <td>${usuarioLogado.nomeUsuario}</td>
+                <td>${usuarioLogado.cpf}</td>
+                <td>${usuarioLogado.genero}</td>
+                <td>${usuarioLogado.logradouro}</td>
+                <td>${usuarioLogado.bairro}</td>
+                <td>${usuarioLogado.cidade}</td>
+                <td>${usuarioLogado.estado}</td>
+                <td>${usuarioLogado.emailUsuario}</td>
+    
+                <td><small style="color: gray;">${usuarioLogado.senhaUsuario.substring(0,15)}...</small></td>
+                <td>${usuarioLogado.dataDeNascimento}</td>
+                `;
+                tableBody.appendChild(row);
+
+
+
+
+    } else {
+                tableBody.innerHTML = '<tr><td colspan="9" class="text-center">Nenhum dado encontrado para o usuário logado.</td></tr>';
+
+
+            }
+        })
+
+            .catch(error => {
+                console.error('Erro ao buscar os dados do usuário:', error);
+                const tableBody = document.querySelector('#tabledata tbody');
+                tableBody.innerHTML = '<tr><td colspan="9" class="text-center">Erro ao carregar os dados.</td></tr>';
+});
+
+});
+
+function apagar(event) {
+
+  if(event) event.preventDefault(); // Evita o comportamento padrão do botão
+
+  //novo nome para armazenar o ID do usuário logado:
+        const id = usuarioIdLogado || localStorage.getItem('usuarioId'); // Obtém o ID do usuário logado do localStorage
+
+        
+
+const result = document.getElementById("result");
+const cartaoinformativo = document.getElementById("cartao-informativo");
+const sobreposicaotela=document.getElementById("sobreposicao-tela");
+
+   if(!id) {
+        // alert('Não foi possível identificar o usuário logado.');
+        // return;
+        result.innerHTML = `<span id = "error"> &#1006;   </span><br> <p>Não foi possível identificar o usuário logado.</p> `;
+
+result.querySelector('p').style.color = "red";
+        
+
+cartaoinformativo.style.background="#fff";
+        cartaoinformativo.style.padding="40px";
+        cartaoinformativo.style.borderRadius= "20px";
+        cartaoinformativo.style.textAlign= "center";
+        cartaoinformativo.style.maxWidth= "380px";
+        cartaoinformativo.style.width= "90%";
+        cartaoinformativo.style.boxShadow= "0 15px 30px rgba(0,0,0,0.3)";
+        cartaoinformativo.style.animation= "entradaSuave 0.4s cubic-bezier(0.68,-0.55,0.265,1.55) forwards";
+     
+         sobreposicaotela.style.position="fixed";
+         sobreposicaotela.style.top="0";
+         sobreposicaotela.style.left="0";
+         sobreposicaotela.style.width="100%";
+         sobreposicaotela.style.height="100%";
+         sobreposicaotela.style.background="rgba(0,0,0,0.7)";
+         sobreposicaotela.style.display="flex";
+         sobreposicaotela.style.justifyContent="center";
+         sobreposicaotela.style.alignItems="center";
+         sobreposicaotela.style.zIndex="9999";
+         sobreposicaotela.style.backdropFilter="blur(5px)";    
+    }
+
+  result.innerHTML=`<h3 id="frase">Tem certeza que deseja apagar seus dados ? Essa ação não poderá ser desfeita !</h3><br><button id="confirmar" type="submit" onclick="confirmarExclusao(event)">Confirmar Exclusão de conta</button><br><button id="cancelar" onclick="fecharConfirmacao(event)">Cancelar</button>`;
+
+document.getElementById("frase").style.color="black";
+document.getElementById("frase").style.fontWeight="bold";
+ result.style.background="";
+         result.style.color="white";
+         result.style.fontWeight="BOLD";
+         result.style.fontSize="18px";
+         result.style.borderRadius="10px";
+         result.style.cursor="pointer";
+         result.style.transition="background 0.3s ease, transform 0.3s ease";
+         result.style.padding="10px 20px";
+
+cartaoinformativo.style.background="#fff";
+        cartaoinformativo.style.padding="40px";
+        cartaoinformativo.style.borderRadius= "20px";
+        cartaoinformativo.style.textAlign= "center";
+        cartaoinformativo.style.maxWidth= "380px";
+        cartaoinformativo.style.width= "90%";
+        cartaoinformativo.style.boxShadow= "0 15px 30px rgba(0,0,0,0.3)";
+        cartaoinformativo.style.animation= "entradaSuave 0.4s cubic-bezier(0.68,-0.55,0.265,1.55) forwards";
+     
+         sobreposicaotela.style.position="fixed";
+         sobreposicaotela.style.top="0";
+         sobreposicaotela.style.left="0";
+         sobreposicaotela.style.width="100%";
+         sobreposicaotela.style.height="100%";
+         sobreposicaotela.style.background="rgba(0,0,0,0.7)";
+         sobreposicaotela.style.display="flex";
+         sobreposicaotela.style.justifyContent="center";
+         sobreposicaotela.style.alignItems="center";
+         sobreposicaotela.style.zIndex="9999";
+         sobreposicaotela.style.backdropFilter="blur(5px)";    
+    }
+
+function fecharConfirmacao(event){
+
+
+
+
+  if  (event)event.preventDefault();
+
+const modal = document.getElementById("modal-apagar");
+const sobreposicaotela = document.getElementById("sobreposicao-tela");
+if(modal && sobreposicaotela){
+    modal.style.display="none";
+    sobreposicaotela.style.display="none";
+}
+
+
+
+}
+function confirmarExclusao(){
+const id = usuarioIdLogado || localStorage.getItem('usuarioId'); // Obtém o ID do usuário logado do localStorage(só um pequeno parêntese : o seu id ele estava antes armazenanando o usuarioLogado que recebia true ou false, então ele nunca ia achar o id do usuário, agora ele vai achar porque eu mudei para pegar o id do localStorage que é armazenado quando o usuário loga no sistema)
+const cartaoinformativo = document.getElementById("cartao-informativo");
+
+    console.log("usuario deletou a conta dele");
+  const modal = document.getElementById("modal-apagar");
+const sobreposicaotela = document.getElementById("sobreposicao-tela");
+if(modal && sobreposicaotela){
+    modal.style.display="none";
+    sobreposicaotela.style.display="none";
+}
+
+        fetch(`http://localhost:8082/usuarios/${id}`, {
+            method: 'DELETE'
+        })
+        .then(response => {
+            if (response.ok) {
+                
+                
+                // alert('Conta apagada com sucesso!');
+                localStorage.clear();
+                 logout(); // Chama a função de logout para limpar o localStorage e redirecionar
+                // window.location.href = 'index.html'; // Redireciona para a página inicial
+
+                const result = document.getElementById("result");
+                result.innerHTML = `<h3 id="frase">Conta apagada com sucesso!</h3><br><button id="confirmar" type="submit" onclick="logout()">Sair</button>`;
+                
+                document.getElementById("frase").style.color="black";
+                document.getElementById("frase").style.fontWeight="bold";
+
+                result.style.color="white";
+         result.style.fontWeight="BOLD";
+         result.style.fontSize="18px";
+         result.style.borderRadius="10px";
+         result.style.cursor="pointer";
+         result.style.transition="background 0.3s ease, transform 0.3s ease";
+         result.style.padding="10px 20px";
+
+cartaoinformativo.style.background="#fff";
+        cartaoinformativo.style.padding="40px";
+        cartaoinformativo.style.borderRadius= "20px";
+        cartaoinformativo.style.textAlign= "center";
+        cartaoinformativo.style.maxWidth= "380px";
+        cartaoinformativo.style.width= "90%";
+        cartaoinformativo.style.boxShadow= "0 15px 30px rgba(0,0,0,0.3)";
+        cartaoinformativo.style.animation= "entradaSuave 0.4s cubic-bezier(0.68,-0.55,0.265,1.55) forwards";
+     
+         sobreposicaotela.style.position="fixed";
+         sobreposicaotela.style.top="0";
+         sobreposicaotela.style.left="0";
+         sobreposicaotela.style.width="100%";
+         sobreposicaotela.style.height="100%";
+         sobreposicaotela.style.background="rgba(0,0,0,0.7)";
+         sobreposicaotela.style.display="flex";
+         sobreposicaotela.style.justifyContent="center";
+         sobreposicaotela.style.alignItems="center";
+         sobreposicaotela.style.zIndex="9999";
+         sobreposicaotela.style.backdropFilter="blur(5px)";    
+
+
+            } else {
+                alert('Erro ao apagar a conta.');
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao apagar a conta:', error);
+            alert('Erro ao apagar a conta.');
+        });
+
+}
+
+
+
+
+   
+
+
+
+
+
+
+
+
+    function atualizar() {
+        if(!usuarioIdLogado) {
+            alert('Não foi possível identificar o usuário logado.');
+            return;
+        }
+        window.location.href = 'atualizar.html?usuarioId=' + usuarioIdLogado; // Redireciona para a página de atualização com o ID do usuário
+    }
+
+</script>
+
+
+
+    
+</body>
+</html>

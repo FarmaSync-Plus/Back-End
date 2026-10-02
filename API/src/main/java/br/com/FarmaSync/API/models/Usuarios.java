@@ -42,13 +42,13 @@ private String cidade;
 @Column(name = "estado", nullable=false,unique=false)
 private String estado;
 
-@Column(name = "cep",nullable = true,unique = true)
+@Column(name = "cep",nullable = true,unique = false)
     private String cep;
 
 @Column(name = "email_usuario" ,nullable=false,unique = true)
 private String emailUsuario;
 
-@Column(name = "senha_usuario" ,nullable = false,unique=false )
+@Column(name = "senha_usuario")
 private String senhaUsuario;
 
 @Column(name = "data_de_nasc")

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Just a Test's</title>
+</head>
+<body>
+    
+
+    <form action="http://localhost:8082/usuarios/save" id="form">
+<input type="text" name="nomeUsuario" id="nome" placeholder="Digite seu nome"><br>
+
+<input type="text" name="cpf" id="cpf" placeholder="Digite seu CPF"><br>
+
+ <input list="genero" placeholder="Genero" name="genero"><br>
+<datalist id="genero" >
+<option value="Masculino">
+<option value="Feminino">
+<option value ="Não Binário">
+<option value="Prefiro não dizer">
+ </datalist>
+<input type="text" placeholder="Rua" name="logradouro"><br>
+                      <input type="text" placeholder="Bairro" name="bairro"><br>
+                       <input type="text" placeholder="cidade" name="cidade"><br>
+                      <input list="estado" placeholder="Estado" name="estado"><br>
+                           <datalist id="estado">
+                         <option value="AC">
+                                    <option value="AL">
+                                    <option value="AP">
+                                    <option value="AM">
+                                    <option value="BA">
+                                    <option value="CE">
+                                    <option value="DF">
+                                    <option value="ES">
+                                    <option value="GO">
+                                    <option value="MA">
+                                    <option value="MT">
+                                    <option value="MS">
+                                    <option value="MG">
+                                    <option value="PA">
+                                    <option value="PB">
+                                    <option value="PR">
+                                    <option value="PE">
+                                    <option value="PI">
+                                    <option value="RJ">
+                                    <option value="RN">
+                                    <option value="RS">
+                                    <option value="RO">
+                                    <option value="RR">
+                                    <option value="SC">
+                                    <option value="SP">
+                                    <option value="SE">
+                                    <option value="TO">
+                                </datalist>
+                            <input type="cep" placeholder="Cep" name="cep"><br>
+                        
+                        <input type="date" placeholder="Data de Nascimento" name="dataDeNascimento"><br>
+
+                <input type="text" name="emailUsuario" id="email" placeholder="Digite seu email"><br>
+
+                        <input type="password" minlength="8" placeholder="Senha" name="senhaUsuario" required><br>
+                        <button id="cadastrar" type="submit">Cadastrar</button>
+
+    </form>
+
+    <script src="Teste.js"></script>
+
+</body>
+</html>

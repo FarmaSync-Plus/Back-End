@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Atualizar Seus Dados</title>
+</head>
+<body>
+<h2>Olá, <span id="nome-usuario">Usuário</span> isso é apenas um teste</h2>
+<div class="logo">
+   
+</div>
+<div id="sobreposicao-tela">
+
+<div id="cartao-informativo">
+    <div id="sucesso">
+
+<div id="error"></div></div></div></div>
+    <div class="form-container">
+
+   <h3>Atualizar Seus Dados</h3>
+   <form action="" method="POST" id="update-form">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nomeUsuario" required>
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" name="cpf" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="emailUsuario" required>
+        <label for="rua">Rua:</label>
+        <input type="text" id="rua" name="logradouro" required>
+        <label for="bairro">Bairro:</label>
+        <input type="text" id="bairro" name="bairro" required>
+        <label for="cidade">Cidade:</label> 
+        <input type="text" id="cidade" name="cidade" required>
+        <label for="estado">Estado:</label> 
+        <input type="text" id="estado" name="estado" required>
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senhaUsuario">
+  <button onclick="entrar(event)">Atualizar</button>
+ <div id="modal-atualizar">
+   <div id="caixa-alerta">
+<!-- <button id="cancelar" onclick="fecharConfirmacao()"></button>
+<button id="confirmar" type="submit" onclick="confirmarAtualizacao()"></button> -->
+<div id="confirm">
+
+</div> 
+ 
+ </div>
+  </div>
+
+   </form>
+    </div>
+
+
+    <script>
+const nomeUsuario = localStorage.getItem('nomeUsuario');
+const usuarioLogado = localStorage.getItem('usuarioLogado');
+
+if(nomeUsuario){
+    document.getElementById('nome-usuario').textContent=nomeUsuario;
+  }
+ 
+
+
+
+
+
+const confirmBtn = document.getElementById("confirm");
+const modal = document.getElementById("modal-atualizar");
+const caixa = document.getElementById("caixa-alerta");
+
+const alertas=document.getElementById("botoes-alerta");
+    const cancelar = document.getElementById("cancelar");
+    const confirmar = document.getElementById("confirmar");
+
+
+
+//função para mostrar os dados nos inputs
+function entrar(event){
+    event.preventDefault();
+const confirmBtn = document.getElementById("confirm");
+const modal = document.getElementById("modal-atualizar");
+const caixa = document.getElementById("caixa-alerta");
+
+const alertas=document.getElementById("botoes-alerta");
+    const cancelar = document.getElementById("cancelar");
+    const confirmar = document.getElementById("confirmar");
+
+caixa.style.background="#fff";
+
+caixa.style.padding="40px";
+caixa.style.borderRadius="20px";
+caixa.style.textAlign="center";
+caixa.style.maxWidth="380px";
+caixa.style.width="90%";
+caixa.style.boxShadow= "0 15px 30px rgba(0,0,0,0.3)";
+caixa.style.animation= "entradaSuave 0.1s cubic-bezier(0.68,-0.55,0.265,1.55) forwards";
+
+//ctrl+shift+l - pega palavras ou coisas de mesmo nome ou atributo ou slaaaa
+
+modal.style.position="fixed";
+modal.style.top="0";
+modal.style.left="0";
+modal.style.width="100%";
+modal.style.height="100%";
+modal.style.background="rgba(0,0,0,0.7)";
+modal.style.display="flex";
+modal.style.justifyContent="center";
+modal.style.alignItems="center";
+modal.style.zIndex="9999";
+modal.style.backdropFilter="blur(5px)";       
+
+
+
+// Sim, Atualizar
+
+// Cancelar
+
+    // <h3 style="margin-bottom:15px;color:#333;">Atualizar Cadastro ?</h3>
+    //    <p>Seus dados serão modificados permanetemente</p>
+ confirmBtn.innerHTML=`<h3 id ="frase">Tem certeza que deseja Atualizar seus dados ?</h3><br><button id="confirmar" type="submit"  onclick="confirmarAtualizacao()">Confirmar atualização</button><br><button id="cancelar"  onclick="fecharConfirmacao(event)">Cancelar</button>`;
+document.getElementById("frase").style.color="black";
+document.getElementById("frase").style.fontWeight="bold";
+ confirmBtn.style.background="";
+         confirmBtn.style.color="white";
+         confirmBtn.style.fontWeight="BOLD";
+         confirmBtn.style.fontSize="18px";
+         confirmBtn.style.borderRadius="10px";
+         confirmBtn.style.cursor="pointer";
+         confirmBtn.style.transition="background 0.3s ease, transform 0.3s ease";
+         confirmBtn.style.padding="10px 20px";
+
+}
+
+function fecharConfirmacao(event){
+    event.preventDefault();
+    modal.style.display = "none";
+}
+async function confirmarAtualizacao() {
+    if(modal){
+        modal.style.display = "none";
+    }
+}
+ 
+let senhaAtual= "";
+let generoAtual = "";// criei o genero para armazenar o valor do genero que o usuario setou no momento do cadastro e para o código lá embaixo nn acabar deixando nulo 
+document.addEventListener("DOMContentLoaded",function(){
+    const dados = localStorage.getItem('emailUsuario')  || localStorage.getItem('cpf');
+
+fetch('http://localhost:8082/usuarios/')
+.then(response => response.json())
+.then(data => {
+
+
+
+    
+    const usuarioLogado = data.find(usuario=> usuario.emailUsuario === dados || usuario.cpf === dados );
+
+if(usuarioLogado){
+    usuarioIdLogado = usuarioLogado.usuarioId;
+    senhaAtual  = usuarioLogado.senhaUsuario;
+    generoAtual = usuarioLogado.genero;// devemos add o genero que o usuario cadastrou no momento do cadastro assim como a senha.
+    console.log("Id do usuario logado ",usuarioIdLogado);
+
+ document.getElementById('nome').value = usuarioLogado.nomeUsuario;
+    document.getElementById('cpf').value = usuarioLogado.cpf;
+    document.getElementById('email').value = usuarioLogado.emailUsuario;
+    document.getElementById('rua').value = usuarioLogado.logradouro;
+    document.getElementById('bairro').value = usuarioLogado.bairro;
+    document.getElementById('cidade').value = usuarioLogado.cidade;
+    document.getElementById('estado').value = usuarioLogado.estado;
+
+
+}else{
+    const erro = document.getElementById("error");
+   const modal = document.getElementById("cartao-informativo");
+   const caixa = document.getElementById("sobreposicao-tela");
+
+    erro.innerHTML=`<h3>Erro </h3><br><p>Usuário não encontrado.Por favor,faça login novamente :</p> <br> <button id="tentativa" onclick="window.location.href='index.html'">Cadastre</button>`;
+    
+
+const con = document.getElementById("tentativa");
+ document.querySelector("h3").style.color="red";
+ document.querySelector('p').style.color="black";
+
+modal.style.background="#fff";
+        modal.style.padding="40px";
+        modal.style.borderRadius= "20px";
+        modal.style.textAlign= "center";
+        modal.style.maxWidth= "380px";
+        modal.style.width= "90%";
+        modal.style.boxShadow= "0 15px 30px rgba(0,0,0,0.3)";
+        modal.style.animation= "entradaSuave 0.4s cubic-bezier(0.68,-0.55,0.265,1.55) forwards";
+     
+caixa.style.position="fixed";
+caixa.style.top="0";
+caixa.style.left="0";
+caixa.style.width="100%";
+caixa.style.height="100%";
+caixa.style.background="rgba(0,0,0,0.7)";
+caixa.style.display="flex";
+caixa.style.justifyContent="center";
+caixa.style.alignItems="center";
+caixa.style.zIndex="9999";
+caixa.style.backdropFilter="blur(5px)";        
+
+con.style.background="blue";
+con.style.color="white";
+con.style.fontWeight="BOLD";
+con.style.fontSize="18px";
+con.style.borderRadius="10px";
+con.style.cursor="pointer";
+con.style.transition="background 0.3s ease, transform 0.3s ease";
+con.style.padding="10px 20px";
+
+
+    // alert('Usuário não encontrado. Por favor, faça login novamente.');
+    // window.location.href = 'entrar.html'; // Redireciona para a página de login
+  } 
+})
+.catch(error =>{
+      console.error('Erro ao buscar os dados do usuário:', error);
+const erro = document.getElementById("error");
+   const modal = document.getElementById("cartao-informativo");
+   const caixa = document.getElementById("sobreposicao-tela");
+
+    erro.innerHTML=`<h3>Erro </h3><br><p>Ocorreu um erro ao buscar os dados do usuário. Por favor, tente novamente</p> <br> `;
+    
+
+const con = document.getElementById("tentativa");
+ document.querySelector("h3").style.color="red";
+ document.querySelector('p').style.color="black";
+
+modal.style.background="#fff";
+        modal.style.padding="40px";
+        modal.style.borderRadius= "20px";
+        modal.style.textAlign= "center";
+        modal.style.maxWidth= "380px";
+        modal.style.width= "90%";
+        modal.style.boxShadow= "0 15px 30px rgba(0,0,0,0.3)";
+        modal.style.animation= "entradaSuave 0.4s cubic-bezier(0.68,-0.55,0.265,1.55) forwards";
+     
+caixa.style.position="fixed";
+caixa.style.top="0";
+caixa.style.left="0";
+caixa.style.width="100%";
+caixa.style.height="100%";
+caixa.style.background="rgba(0,0,0,0.7)";
+caixa.style.display="flex";
+caixa.style.justifyContent="center";
+caixa.style.alignItems="center";
+caixa.style.zIndex="9999";
+caixa.style.backdropFilter="blur(5px)";        
+
+con.style.background="blue";
+con.style.color="white";
+con.style.fontWeight="BOLD";
+con.style.fontSize="18px";
+con.style.borderRadius="10px";
+con.style.cursor="pointer";
+con.style.transition="background 0.3s ease, transform 0.3s ease";
+con.style.padding="10px 20px";
+
+
+        // alert('Ocorreu um erro ao buscar os dados do usuário. Por favor, tente novamente.');
+  
+
+    });
+})
+// parte para atualizar os dados
+document.getElementById("update-form").addEventListener('submit',function(event){
+    event.preventDefault();
+
+ const usuarioId = usuarioIdLogado; // Use o ID do usuário logado
+        const nome = document.getElementById('nome').value;
+        const cpf = document.getElementById('cpf').value;
+        const email = document.getElementById('email').value;
+        const rua = document.getElementById('rua').value;
+        const bairro = document.getElementById('bairro').value;
+        const cidade = document.getElementById('cidade').value;
+        const estado = document.getElementById('estado').value;
+        
+//REGRA PARA VERIFICAR SE O CAMPO SENHA FOI DIGITADO OU SE O USUARIO MANTEVE O MEMSO :
+const senhaInput=document.getElementById("senha").value.trim();
+
+const dadosAtualizados = {
+
+nomeUsuario : nome,
+cpf:cpf,
+emailUsuario : email,
+logradouro : rua,
+bairro: bairro,
+cidade:cidade,
+estado:estado,
+genero:generoAtual,
+senhaUsuario: senhaInput !== "" ? senhaInput : senhaAtual // se a senha input não estiver vazia ele coloca a senha que o usuario for digitar, senão ele mantém a senhaAtual que é a senha que ele fez no inicio que esta cadastrada no db dele.
+
+};
+
+
+//Para provar que a senha é criada apenas se a senhaInput estiver com dados, ai está um for in... que será gerado no console , se a senha nn mudar a propriedade senha nn aparece , agora se o usuario mudar a senha , a propriedade senha aparece :)
+for(let d in dadosAtualizados ){
+    console.log(d);
+}
+
+fetch(`http://localhost:8082/usuarios/${usuarioId}`,{
+method : 'PUT',
+headers: {
+    'Content-Type' :'application/json'
+},
+body:JSON.stringify(dadosAtualizados)
+
+})
+.then(response => {
+    //Essa parte é muito Importante em seu código :  
+    if(response.ok){
+localStorage.setItem('emailUsuario',email);
+localStorage.setItem('nomeUsuario',nome);
+localStorage.setItem('cpf',cpf);
+const nomeUsuario = localStorage.getItem('nomeUsuario');
+const usuarioId = localStorage.getItem('usuarioId');
+
+
+
+
+const sucesso = document.getElementById("sucesso");
+   const modal = document.getElementById("cartao-informativo");
+   const caixa = document.getElementById("sobreposicao-tela");
+   const confirmBtn = document.getElementById("confirm");
+   
+
+    sucesso.innerHTML=`<span id="certo">✔</span><br><p>Dados atualizados com sucesso!</p> <br> <button id="btns" onclick="window.location.href='minhaconta.html'">Entrar</button>`;
+    
+
+const con = document.getElementById("sucesso");
+ document.querySelector("h3").style.color="red";
+ document.querySelector('p').style.color="black";
+
+modal.style.background="#fff";
+        modal.style.padding="40px";
+        modal.style.borderRadius= "20px";
+        modal.style.textAlign= "center";
+        modal.style.maxWidth= "380px";
+        modal.style.width= "90%";
+        modal.style.boxShadow= "0 15px 30px rgba(0,0,0,0.3)";
+        modal.style.animation= "entradaSuave 0.4s cubic-bezier(0.68,-0.55,0.265,1.55) forwards";
+     
+caixa.style.position="fixed";
+caixa.style.top="0";
+caixa.style.left="0";
+caixa.style.width="100%";
+caixa.style.height="100%";
+caixa.style.background="rgba(0,0,0,0.7)";
+caixa.style.display="flex";
+caixa.style.justifyContent="center";
+caixa.style.alignItems="center";
+caixa.style.zIndex="9999";
+caixa.style.backdropFilter="blur(5px)";        
+   
+con.style.color="white";
+con.style.fontWeight="BOLD";
+con.style.fontSize="18px";
+con.style.borderRadius="10px";
+con.style.cursor="pointer";
+con.style.transition="background 0.3s ease, transform 0.3s ease";
+con.style.padding="10px 20px";
+
+
+
+
+
+       // alert('Dados atualizados com sucesso!');
+       // window.location.href = 'minhaconta.html'; // Redireciona para a página de conta após atualização
+   } else {
+
+ return response.text().then(text => { throw new Error(text) });
+   }
+        })
+        .catch(error => {
+   console.error('Erro ao atualizar os dados:', error);
+
+       const erro = document.getElementById("error");
+   const modal = document.getElementById("cartao-informativo");
+   const caixa = document.getElementById("sobreposicao-tela");
+
+    erro.innerHTML1=`<h3>Erro </h3><br><p>Erro ao realizar a atualização. Por favor tente novamente</p> <br> <button id="tentativa" onclick="window.location.href='atualizar.html'">Tentar novamente</button>`;
+    
+
+const con = document.getElementById("tentativa");
+
+
+modal.style.background="#fff";
+        modal.style.padding="40px";
+        modal.style.borderRadius= "20px";
+        modal.style.textAlign= "center";
+        modal.style.maxWidth= "380px";
+        modal.style.width= "90%";
+        modal.style.boxShadow= "0 15px 30px rgba(0,0,0,0.3)";
+        modal.style.animation= "entradaSuave 0.4s cubic-bezier(0.68,-0.55,0.265,1.55) forwards";
+     
+caixa.style.position="fixed";
+caixa.style.top="0";
+caixa.style.left="0";
+caixa.style.width="100%";
+caixa.style.height="100%";
+caixa.style.background="rgba(0,0,0,0.7)";
+caixa.style.display="flex";
+caixa.style.justifyContent="center";
+caixa.style.alignItems="center";
+caixa.style.zIndex="9999";
+caixa.style.backdropFilter="blur(5px)";        
+
+con.style.background="blue";
+con.style.color="white";
+con.style.fontWeight="BOLD";
+con.style.fontSize="18px";
+con.style.borderRadius="10px";
+con.style.cursor="pointer";
+con.style.transition="background 0.3s ease, transform 0.3s ease";
+con.style.padding="10px 20px";
+
+});
+
+
+
+
+
+});
+
+    </script>
+
+
+</body>
+</html>

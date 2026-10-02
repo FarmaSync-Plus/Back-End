@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Entre com sua conta</title>
+</head>
+<body>
+    <div id="sobreposicao-tela">
+
+<div id="cartao-informativo">
+
+<div id="result"></div>
+</div>
+</div>
+<div class="form">
+
+<form id="login-form" >
+    <h1>Login</h1>
+    <input type="text" id="email" name="emailUsuario" placeholder="Digite seu email" >
+
+    <input type="password" id="senha" name="senhaUsuario" placeholder="Digite sua senha" required>
+
+    <p>Não lembro a senha.... tente usando seu CPF:</p>
+    <input type="text" id="cpf" name="cpf" placeholder="Digite seu CPF" >
+    <button id="entrar-btn" type="submit">Entrar</button>
+</form>
+
+
+
+</div>
+
+<script>
+const form = document.getElementById('login-form');
+form.addEventListener("submit",async (event) => {
+    event.preventDefault();
+
+    const email=document.getElementById("email").value.trim();
+    const senha = document.getElementById("senha").value.trim();
+    const cpf = document.getElementById("cpf").value.trim();
+
+    if(!email && !cpf) {
+    const msg = document.getElementById("result");
+const cartaoinformativo = document.getElementById("cartao-informativo");
+   const sobreposicaotela = document.getElementById("sobreposicao-tela");
+    // alert('Por favor, preencha  o email ou Cpf para continuar.');
+
+    msg.innerHTML = `<span id = "error"> &#1006;   </span><br> <p>Por favor, preencha  o email ou Cpf para continuar.</p> <br> <button id="btns" onclick="fecharModal()">OK</button> `;
+
+
+    cartaoinformativo.style.background="#fff";
+        cartaoinformativo.style.padding="40px";
+        cartaoinformativo.style.borderRadius= "20px";
+        cartaoinformativo.style.textAlign= "center";
+        cartaoinformativo.style.maxWidth= "380px";
+        cartaoinformativo.style.width= "90%";
+        cartaoinformativo.style.boxShadow= "0 15px 30px rgba(0,0,0,0.3)";
+        cartaoinformativo.style.animation= "entradaSuave 0.4s cubic-bezier(0.68,-0.55,0.265,1.55) forwards";
+     
+         sobreposicaotela.style.position="fixed";
+         sobreposicaotela.style.top="0";
+         sobreposicaotela.style.left="0";
+         sobreposicaotela.style.width="100%";
+         sobreposicaotela.style.height="100%";
+         sobreposicaotela.style.background="rgba(0,0,0,0.7)";
+         sobreposicaotela.style.display="flex";
+         sobreposicaotela.style.justifyContent="center";
+         sobreposicaotela.style.alignItems="center";
+         sobreposicaotela.style.zIndex="9999";
+         sobreposicaotela.style.backdropFilter="blur(5px)";                              
+
+    return;
+    }
+    if(!senha){
+        const msg = document.getElementById("result");
+const cartaoinformativo = document.getElementById("cartao-informativo");
+   const sobreposicaotela = document.getElementById("sobreposicao-tela");
+
+
+
+    msg.innerHTML = `<span id = "error"> &#1006;   </span><br> <p>Por favor, preencha a senha para continuar.</p> <br> <button id="btns" onclick="fecharModal()">OK</button> `;
+
+ cartaoinformativo.style.background="#fff";
+        cartaoinformativo.style.padding="40px";
+        cartaoinformativo.style.borderRadius= "20px";
+        cartaoinformativo.style.textAlign= "center";
+        cartaoinformativo.style.maxWidth= "380px";
+        cartaoinformativo.style.width= "90%";
+        cartaoinformativo.style.boxShadow= "0 15px 30px rgba(0,0,0,0.3)";
+        cartaoinformativo.style.animation= "entradaSuave 0.4s cubic-bezier(0.68,-0.55,0.265,1.55) forwards";
+     
+         sobreposicaotela.style.position="fixed";
+         sobreposicaotela.style.top="0";
+         sobreposicaotela.style.left="0";
+         sobreposicaotela.style.width="100%";
+         sobreposicaotela.style.height="100%";
+         sobreposicaotela.style.background="rgba(0,0,0,0.7)";
+         sobreposicaotela.style.display="flex";
+         sobreposicaotela.style.justifyContent="center";
+         sobreposicaotela.style.alignItems="center";
+         sobreposicaotela.style.zIndex="9999";
+         sobreposicaotela.style.backdropFilter="blur(5px)";                              
+
+
+
+    return;
+   }
+   const identificador = email||cpf;
+   const dadosLogin ={
+    senhaUsuario:senha
+   };
+   if(email){
+    dadosLogin.emailUsuario=email;
+   } else if(cpf){
+    dadosLogin.cpf=cpf;
+   }try{
+    const response = await fetch('http://localhost:8082/usuarios/login',{
+        method:'POST',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(dadosLogin)
+        
+    });
+    if(response.ok){
+
+const msg = document.getElementById("result");
+const cartaoinformativo = document.getElementById("cartao-informativo");
+   const sobreposicaotela = document.getElementById("sobreposicao-tela");
+
+
+
+            const usuario = await response.json();
+            console.log('Login bem-sucedido:', usuario);
+            // Redirecionar para a página de sucesso ou dashboard
+         localStorage.setItem('usuarioLogado', 'true'); // Armazena os dados do usuário no localStorage
+         localStorage.setItem('nomeUsuario', usuario.nomeUsuario); // Armazena o nome do usuário no localStorage
+         localStorage.setItem('emailUsuario', usuario.emailUsuario); // Armazena o email do usuário no localStorage
+         localStorage.setItem('CpfUsuario',usuario.cpf);
+                
+           msg.innerHTML = `<span id="certo">✔</span><br><h3>Login efetuado com sucesso!</h3> <br> <button id="btns" onclick="window.location.href='get.html'">Entrar</button>`;
+document.querySelector("h3").style.color="red";
+
+
+
+cartaoinformativo.style.background="#fff";
+        cartaoinformativo.style.padding="40px";
+        cartaoinformativo.style.borderRadius= "20px";
+        cartaoinformativo.style.textAlign= "center";
+        cartaoinformativo.style.maxWidth= "380px";
+        cartaoinformativo.style.width= "90%";
+        cartaoinformativo.style.boxShadow= "0 15px 30px rgba(0,0,0,0.3)";
+        cartaoinformativo.style.animation= "entradaSuave 0.4s cubic-bezier(0.68,-0.55,0.265,1.55) forwards";
+     
+         sobreposicaotela.style.position="fixed";
+         sobreposicaotela.style.top="0";
+         sobreposicaotela.style.left="0";
+         sobreposicaotela.style.width="100%";
+         sobreposicaotela.style.height="100%";
+         sobreposicaotela.style.background="rgba(0,0,0,0.7)";
+         sobreposicaotela.style.display="flex";
+         sobreposicaotela.style.justifyContent="center";
+         sobreposicaotela.style.alignItems="center";
+         sobreposicaotela.style.zIndex="9999";
+         sobreposicaotela.style.backdropFilter="blur(5px)";                                                     
+         
+        //  msg.style.background="blue";
+        //  msg.style.color="white";
+        //  msg.style.fontWeight="BOLD";
+        //  msg.style.fontSize="18px";
+        //  msg.style.borderRadius="10px";
+        //  msg.style.cursor="pointer";
+        //  msg.style.transition="background 0.3s ease, transform 0.3s ease";
+        //  msg.style.padding="10px 20px";
+
+//ctrl +shift+l -> seleciona palavras de mesma correspondecia rapidamente
+
+
+
+
+
+        
+    }else {
+const msg = document.getElementById("result");
+const cartaoinformativo = document.getElementById("cartao-informativo");
+   const sobreposicaotela = document.getElementById("sobreposicao-tela");
+
+
+            const errorText = await response.text();
+            console.error('Erro no login:', errorText);
+            // alert('Falha no login: ' + (errorText || 'Verifique suas credenciais.'));
+msg.innerHTML = `<span id = "error"> &#1006;   </span><br> <p>Falha no login: ${errorText || 'Verifique suas credenciais.'}</p> <br> <button id="btns" onclick="fecharModal()">OK</button>`;           
+
+
+
+cartaoinformativo.style.background="#fff";
+        cartaoinformativo.style.padding="40px";
+        cartaoinformativo.style.borderRadius= "20px";
+        cartaoinformativo.style.textAlign= "center";
+        cartaoinformativo.style.maxWidth= "380px";
+        cartaoinformativo.style.width= "90%";
+        cartaoinformativo.style.boxShadow= "0 15px 30px rgba(0,0,0,0.3)";
+        cartaoinformativo.style.animation= "entradaSuave 0.4s cubic-bezier(0.68,-0.55,0.265,1.55) forwards";
+     
+         sobreposicaotela.style.position="fixed";
+         sobreposicaotela.style.top="0";
+         sobreposicaotela.style.left="0";
+         sobreposicaotela.style.width="100%";
+         sobreposicaotela.style.height="100%";
+         sobreposicaotela.style.background="rgba(0,0,0,0.7)";
+         sobreposicaotela.style.display="flex";
+         sobreposicaotela.style.justifyContent="center";
+         sobreposicaotela.style.alignItems="center";
+         sobreposicaotela.style.zIndex="9999";
+         sobreposicaotela.style.backdropFilter="blur(5px)";  
+
+
+        }
+   }catch(error){
+    const msg = document.getElementById("result");
+const cartaoinformativo = document.getElementById("cartao-informativo");
+   const sobreposicaotela = document.getElementById("sobreposicao-tela");
+
+
+        console.error('Erro na requisição:', error);
+        // alert('Ocorreu um erro ao tentar fazer login. Tente novamente mais tarde.');
+
+        msg.innerHTML = `<span id = "error"> &#1006;   </span><br> <p>Ocorreu um erro ao tentar fazer login. Tente novamente mais tarde.</p> <br> <button id="btns" onclick="fecharModal()">OK</button> `;
+
+
+cartaoinformativo.style.background="#fff";
+        cartaoinformativo.style.padding="40px";
+        cartaoinformativo.style.borderRadius= "20px";
+        cartaoinformativo.style.textAlign= "center";
+        cartaoinformativo.style.maxWidth= "380px";
+        cartaoinformativo.style.width= "90%";
+        cartaoinformativo.style.boxShadow= "0 15px 30px rgba(0,0,0,0.3)";
+        cartaoinformativo.style.animation= "entradaSuave 0.4s cubic-bezier(0.68,-0.55,0.265,1.55) forwards";
+     
+         sobreposicaotela.style.position="fixed";
+         sobreposicaotela.style.top="0";
+         sobreposicaotela.style.left="0";
+         sobreposicaotela.style.width="100%";
+         sobreposicaotela.style.height="100%";
+         sobreposicaotela.style.background="rgba(0,0,0,0.7)";
+         sobreposicaotela.style.display="flex";
+         sobreposicaotela.style.justifyContent="center";
+         sobreposicaotela.style.alignItems="center";
+         sobreposicaotela.style.zIndex="9999";
+         sobreposicaotela.style.backdropFilter="blur(5px)";  
+
+
+    
+   }
+
+
+});
+function fecharModal() {
+      const sobreposicaotela = document.getElementById("sobreposicao-tela");
+        sobreposicaotela.style.display = "none";
+    }
+
+
+
+
+</script>
+
+</body>
+</html>
