@@ -2,7 +2,8 @@ package br.com.FarmaSync.API.models;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="pedidos")
@@ -13,26 +14,28 @@ public class pedidos {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long pedidosId ;
 
-    @Column(name="nome")
-    private String nome;
 
-    @Column(name="peso")
-    private Float peso;
+
+
+
+    @Column(name = "produto_json",columnDefinition = "TEXT")
+    private String produtoJson;
+
 
     @Column(name="pagamento",nullable = false)
     private String pagamento;
 
     @Column(name="valor_total")
-    private Float valorTotal;
+    private Double valorTotal;
 
-    @Column(name="quantidade_pedido",nullable = false)
-    private String quantidadePedido;
+    @Column(name="quantidade_total",nullable = false)
+    private Integer quantidadeTotal;
 
     @Column(name="data_pedido")
-    private Date dataPedido;
+    private LocalDateTime dataPedido;
 
     @Column(name="pedido_atualizacao")
-    private String pedidoAtualizacao;
+    private LocalDateTime pedidoAtualizacao;
 
     public Long getPedidosId() {
         return pedidosId;
@@ -42,21 +45,11 @@ public class pedidos {
         this.pedidosId = pedidosId;
     }
 
-    public String getNome() {
-        return nome;
-    }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 
-    public Float getPeso() {
-        return peso;
-    }
 
-    public void setPeso(Float peso) {
-        this.peso = peso;
-    }
+
+
 
     public String getPagamento() {
         return pagamento;
@@ -66,35 +59,44 @@ public class pedidos {
         this.pagamento = pagamento;
     }
 
-    public Float getValorTotal() {
+
+    public String getProdutoJson() {
+        return produtoJson;
+    }
+
+    public void setProdutoJson(String produtoJson) {
+        this.produtoJson = produtoJson;
+    }
+
+    public Double getValorTotal() {
         return valorTotal;
     }
 
-    public void setValorTotal(Float valorTotal) {
+    public void setValorTotal(Double valorTotal) {
         this.valorTotal = valorTotal;
     }
 
-    public String getQuantidadePedido() {
-        return quantidadePedido;
+    public Integer getQuantidadeTotal() {
+        return quantidadeTotal;
     }
 
-    public void setQuantidadePedido(String quantidadePedido) {
-        this.quantidadePedido = quantidadePedido;
+    public void setQuantidadeTotal(Integer quantidadeTotal) {
+        this.quantidadeTotal = quantidadeTotal;
     }
 
-    public Date getDataPedido() {
+    public LocalDateTime getDataPedido() {
         return dataPedido;
     }
 
-    public void setDataPedido(Date dataPedido) {
+    public void setDataPedido(LocalDateTime dataPedido) {
         this.dataPedido = dataPedido;
     }
 
-    public String getPedidoAtualizacao() {
+    public LocalDateTime getPedidoAtualizacao() {
         return pedidoAtualizacao;
     }
 
-    public void setPedidoAtualizacao(String pedidoAtualizacao) {
+    public void setPedidoAtualizacao(LocalDateTime pedidoAtualizacao) {
         this.pedidoAtualizacao = pedidoAtualizacao;
     }
 }

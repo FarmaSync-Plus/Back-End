@@ -28,7 +28,12 @@ private String cpf;
  @Column(name = "genero",nullable = true)
  private String genero;
 
-@Column(name = "logradouro", nullable = false,unique=false)
+ @Column(name= "telefone",unique=true)
+ private String telefone;
+
+
+
+    @Column(name = "logradouro", nullable = false,unique=false)
 private String logradouro;
 
 
@@ -85,6 +90,17 @@ private Date dataDeNascimento;
     public void setGenero(String genero) {
         this.genero = genero;
     }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+
+
 
     public String getLogradouro() {
         return logradouro;
